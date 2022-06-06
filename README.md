@@ -21,6 +21,16 @@ This is a hobby project, so it may or may not recieve updates
 - ???
 - Profit
 
+# iOS as MIDI-Device
+Tested using iPad and mac
+- Connect the device to your computer via USB
+- In TouchOSC open the connections tab. (the button with the chain symbol)
+- Go to MIDI tab
+- Enable Connection 1 and browse for the Host (mine is called "IDAM MIDI Host", dont know if this is default)
+- Click done
+- On the mac, open Audio-Midi-Setup
+- Your device will be listed on the left, click on Activate. You have to do this step every time, no idea why, if someone knows how to NOT have to do that, please tell me.
+
 # Customize
 ## Controls
 Here is what you need to know for customization:
