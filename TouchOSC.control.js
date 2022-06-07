@@ -8,6 +8,7 @@ const REMOTE_PAGE_NEXT = 11;
 const REMOTE_REQUEST_UPDATE = 12;
 const REMOTE_DEVICE_NEXT = 13;
 const REMOTE_DEVICE_PREVIOUS = 14;
+const REMOTE_TRACK_NAME = 15;
 
 host.setShouldFailOnDeprecatedUse(true);
 
@@ -25,8 +26,14 @@ function init() {
    cursorDevice = cursorTrack.createCursorDevice();
    remoteControls = cursorDevice.createCursorRemoteControlsPage(8);
 
-
    userControls = host.createUserControls(REMOTE_CONTROL_HI - REMOTE_CONTROL_LO + 1);
+
+   remoteControls.pageNames().markInterested();
+   remoteControls.selectedPageIndex().markInterested();
+   remoteControls.selectedPageIndex().addValueObserver(sendDevicePageLabel);
+   cursorTrack.name().markInterested();
+   cursorTrack.name().addValueObserver(sendTrackLabel);
+   cursorDevice.channel().name().markInterested();
 
    for(let i = REMOTE_CONTROL_LO; i <= REMOTE_CONTROL_HI; i++){
       userControls.getControl(i-REMOTE_CONTROL_LO).setLabel(`CC${i}`);
@@ -35,11 +42,9 @@ function init() {
    for(let index = 0; index < 8; index ++){
       remoteControls.getParameter(index).value().markInterested();
       remoteControls.getParameter(index).name().markInterested();
-      remoteControls.pageNames().markInterested();
-      remoteControls.selectedPageIndex().markInterested();
-      remoteControls.selectedPageIndex().addValueObserver(sendAllLabels);
       println(remoteControls.getParameter(index).value().addValueObserver(128, function(value){
          onParameter(index, value);
+         sendParameterLabels();
       }.bind(index)));
 
    }
@@ -68,26 +73,40 @@ function onMidi0(status, data1, data2) {
          }else if(data1 === REMOTE_DEVICE_PREVIOUS && data2 === 127){
             cursorDevice.selectPrevious();
          } else if((data1 === REMOTE_PAGE_NEXT || data1 === REMOTE_PAGE_PREVIOUS) && data2 === 0) {
-            for (let i = 0; i<8; i++){
-               sendParameterName(i + REMOTE_CONTROL_LO);
-               let currentPageIndex = remoteControls.selectedPageIndex().get();
-               let currentPageName = remoteControls.pageNames().get(currentPageIndex);
-               //println(remoteControls.pageNames().get(remoteControls.selectedPageIndex().get()).get());
-               host.getMidiOutPort(0).sendSysex(`f0${REMOTE_REQUEST_UPDATE}${getHex(currentPageName)}f7`);
-            }
          }
       }
    }
 }
 
-function sendAllLabels(value){
-   println("sending all labels");
+function sendParameterLabels(){
+   for (let i = 0; i<8; i++){
+      sendParameterName(i + REMOTE_CONTROL_LO);
+   }
+   //---send page name---
+}
+
+function sendDevicePageLabel(){
+   try {
+      let currentPageIndex = remoteControls.selectedPageIndex().get();
+      let currentPageName = remoteControls.pageNames().get(currentPageIndex);
+      sendCustomSysex(REMOTE_REQUEST_UPDATE, currentPageName);
+   }catch(err){
+      println(err);
+   }
+}
+
+function sendTrackLabel(){
+   try{
+      let trackname = cursorDevice.channel().name().get();
+      sendCustomSysex(REMOTE_TRACK_NAME, trackname);
+   }catch(err){
+      println(err);
+   }
 }
 
 function onParameter(parameter, value){
    println(`on Parameter: ${parameter} new value:  ${value}`);
    host.getMidiOutPort(0).sendMidi(176, REMOTE_CONTROL_LO + parameter, value);
-   sendParameterName(parameter);
 }
 
 function sendParameterName(parameter){
@@ -96,8 +115,9 @@ function sendParameterName(parameter){
    if(parhex === "")return;
    let indhex = parameter.toString(16);
    if(indhex.length%2!==0)indhex='0'+indhex;
-   let sysexmessage = `f0${indhex}${parhex}f7`;
-   host.getMidiOutPort(0).sendSysex(sysexmessage);
+   sendCustomSysex(indhex, parametername);
+   //let sysexmessage = `f0${indhex}${parhex}f7`;
+   //host.getMidiOutPort(0).sendSysex(sysexmessage);
    //host.getMidiOutPort(0).sendSysex('f0410134f7');
 }
 
@@ -108,6 +128,10 @@ function getHex(inputString){
       output += inputString.charCodeAt(i).toString(16);
    }
    return output;
+}
+
+function sendCustomSysex(channel, message){
+   host.getMidiOutPort(0).sendSysex(`f0${channel}${getHex(message)}f7`);
 }
 
 function onKnob(index, value){
