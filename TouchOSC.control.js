@@ -6,6 +6,8 @@ const REMOTE_CONTROL_LO = 0;
 const REMOTE_PAGE_PREVIOUS = 10;
 const REMOTE_PAGE_NEXT = 11;
 const REMOTE_REQUEST_UPDATE = 12;
+const REMOTE_DEVICE_NEXT = 13;
+const REMOTE_DEVICE_PREVIOUS = 14;
 
 host.setShouldFailOnDeprecatedUse(true);
 
@@ -35,6 +37,7 @@ function init() {
       remoteControls.getParameter(index).name().markInterested();
       remoteControls.pageNames().markInterested();
       remoteControls.selectedPageIndex().markInterested();
+      remoteControls.selectedPageIndex().addValueObserver(sendAllLabels);
       println(remoteControls.getParameter(index).value().addValueObserver(128, function(value){
          onParameter(index, value);
       }.bind(index)));
@@ -60,6 +63,10 @@ function onMidi0(status, data1, data2) {
             remoteControls.selectNextPage(true);
          } else if (data1 === REMOTE_PAGE_PREVIOUS && data2 === 127) {
             remoteControls.selectPreviousPage(true);
+         }else if(data1===REMOTE_DEVICE_NEXT && data2 === 127){
+            cursorDevice.selectNext();
+         }else if(data1 === REMOTE_DEVICE_PREVIOUS && data2 === 127){
+            cursorDevice.selectPrevious();
          } else if((data1 === REMOTE_PAGE_NEXT || data1 === REMOTE_PAGE_PREVIOUS) && data2 === 0) {
             for (let i = 0; i<8; i++){
                sendParameterName(i + REMOTE_CONTROL_LO);
@@ -71,6 +78,10 @@ function onMidi0(status, data1, data2) {
          }
       }
    }
+}
+
+function sendAllLabels(value){
+   println("sending all labels");
 }
 
 function onParameter(parameter, value){
