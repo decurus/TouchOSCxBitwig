@@ -12,7 +12,7 @@ const REMOTE_TRACK_NAME = 15;
 
 host.setShouldFailOnDeprecatedUse(true);
 
-host.defineController("Generic", "TouchOSC", "0.1", "b1c0c6dd-bbcf-4008-b84f-7faa3823dfdd", "decurus");
+host.defineController("Generic", "TouchOSC", "0.2", "b1c0c6dd-bbcf-4008-b84f-7faa3823dfdd", "decurus");
 
 host.defineMidiPorts(1, 1);
 
