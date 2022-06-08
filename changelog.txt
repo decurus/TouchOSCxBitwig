@@ -1,0 +1,7 @@
+v 0.2
+most stuff now uses callback funcitons so no more wrong labels when changing page (hopefully)
+added track label
+added buttons to change selected device
+
+v 0.1
+Initial Commit
