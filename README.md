@@ -6,8 +6,9 @@ This is a hobby project, so it may or may not recieve updates
 
 # Features
 - All remote controls of the currently selected Bitwig device are automatically mapped to the TouchOSC knobs
-- Names of all parameters are displayed
+- Names of all parameters and currently selected track are displayed
 - Change remote pages via TouchOSC
+- Change selected device
 - No extra software or hardware required
 
 # Installation
