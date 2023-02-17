@@ -2,7 +2,8 @@
 A little script that makes Bitwig communicate with TouchOSC and vis versa.
 This is a hobby project, so it may or may not recieve updates
 
-![IMG_345377AD7C75-1](https://user-images.githubusercontent.com/25495079/172157263-7434e453-63de-4e14-b66c-011a621910bd.jpeg)
+![IMG_2954409F5FA5-1](https://user-images.githubusercontent.com/25495079/219516861-93bbb6dc-a4c0-4f09-a466-aa3a37e402b4.jpeg)
+![IMG_D5A0DF87F93D-1](https://user-images.githubusercontent.com/25495079/219516769-824d4dd7-d4e2-434a-b61c-c3fd8e3bbaf7.jpeg)
 
 # Features
 - All remote controls of the currently selected Bitwig device are automatically mapped to the TouchOSC knobs
