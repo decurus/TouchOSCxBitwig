@@ -2,7 +2,8 @@
 A little script that makes Bitwig communicate with TouchOSC and vis versa.
 This is a hobby project, so it may or may not recieve updates
 
-![IMG_345377AD7C75-1](https://user-images.githubusercontent.com/25495079/172157263-7434e453-63de-4e14-b66c-011a621910bd.jpeg)
+![IMG_2954409F5FA5-1](https://user-images.githubusercontent.com/25495079/219516861-93bbb6dc-a4c0-4f09-a466-aa3a37e402b4.jpeg)
+![IMG_D5A0DF87F93D-1](https://user-images.githubusercontent.com/25495079/219516769-824d4dd7-d4e2-434a-b61c-c3fd8e3bbaf7.jpeg)
 
 # Features
 - All remote controls of the currently selected Bitwig device are automatically mapped to the TouchOSC knobs
@@ -15,7 +16,7 @@ This is a hobby project, so it may or may not recieve updates
 - Install Bitwig ... duh... i mean...why else would you want that script.
 - Install TouchOSC on the hardware device of your liking. I tested it on an iPad, works great
 - Connect your hardware device such that it is recognized as a Midi device (see steps below)
-- But the TouchOSC Layout onto your hardware device.
+- Put the TouchOSC Layout onto your hardware device. (For example via AirDrop or by connecting the TouchOSC Editor from your external device with the TouchOSC Editor on your computer as described here: https://hexler.net/touchosc/manual/editor-network)
 - Create a folder in your Controller Scripts folder (for Mac thats ~/Documents/Bitwig Studio/Controller Scripts) called TouchOSC
 - Copy the script TouchOSC.control.js into that folder
 - In Bitwig: open the control preferences and add a new controller (generic->TouchOSC)
@@ -25,12 +26,13 @@ This is a hobby project, so it may or may not recieve updates
 # iOS as MIDI-Device
 Tested using iPad and mac
 - Connect the device to your computer via USB
+- On the mac, open Audio-Midi-Setup
+- Your device will be listed on the left, click on Activate. You have to do this step every time, no idea why, if someone knows how to NOT have to do that, please tell me.
 - In TouchOSC open the connections tab. (the button with the chain symbol)
 - Go to MIDI tab
 - Enable Connection 1 and browse for the Host (mine is called "IDAM MIDI Host", dont know if this is default)
 - Click done
-- On the mac, open Audio-Midi-Setup
-- Your device will be listed on the left, click on Activate. You have to do this step every time, no idea why, if someone knows how to NOT have to do that, please tell me.
+
 
 # Customize
 ## Controls
@@ -46,4 +48,4 @@ When TouchOSC receives the Names of the parameters it searches for labels that a
 
 # But how does it send the names
 Cruel abuse of SysEx Messages. 
-Basically, the script constructs a message with the first to chars beeing the hex representation of the index of the parameter and the following being the hex converted ascii representations of the chars of the name. TouchOSC reconverts that (this project was literally my first time ever scripting in LUA, so if you happen to check out the script, be nice XD)
+Basically, the script constructs a message with the first two chars beeing the hex representation of the index of the parameter and the following being the hex converted ascii representations of the chars of the name. TouchOSC reconverts that (this project was literally my first time ever scripting in LUA, so if you happen to check out the script, be nice XD)
