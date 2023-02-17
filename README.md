@@ -15,7 +15,7 @@ This is a hobby project, so it may or may not recieve updates
 - Install Bitwig ... duh... i mean...why else would you want that script.
 - Install TouchOSC on the hardware device of your liking. I tested it on an iPad, works great
 - Connect your hardware device such that it is recognized as a Midi device (see steps below)
-- But the TouchOSC Layout onto your hardware device.
+- But the TouchOSC Layout onto your hardware device. (For example via AirDrop or by connecting the TouchOSC Editor from your external device with the TouchOSC Editor on your computer as described here: https://hexler.net/touchosc/manual/editor-network)
 - Create a folder in your Controller Scripts folder (for Mac thats ~/Documents/Bitwig Studio/Controller Scripts) called TouchOSC
 - Copy the script TouchOSC.control.js into that folder
 - In Bitwig: open the control preferences and add a new controller (generic->TouchOSC)
@@ -25,12 +25,13 @@ This is a hobby project, so it may or may not recieve updates
 # iOS as MIDI-Device
 Tested using iPad and mac
 - Connect the device to your computer via USB
+- On the mac, open Audio-Midi-Setup
+- Your device will be listed on the left, click on Activate. You have to do this step every time, no idea why, if someone knows how to NOT have to do that, please tell me.
 - In TouchOSC open the connections tab. (the button with the chain symbol)
 - Go to MIDI tab
 - Enable Connection 1 and browse for the Host (mine is called "IDAM MIDI Host", dont know if this is default)
 - Click done
-- On the mac, open Audio-Midi-Setup
-- Your device will be listed on the left, click on Activate. You have to do this step every time, no idea why, if someone knows how to NOT have to do that, please tell me.
+
 
 # Customize
 ## Controls
