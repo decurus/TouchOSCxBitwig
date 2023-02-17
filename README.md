@@ -15,7 +15,7 @@ This is a hobby project, so it may or may not recieve updates
 - Install Bitwig ... duh... i mean...why else would you want that script.
 - Install TouchOSC on the hardware device of your liking. I tested it on an iPad, works great
 - Connect your hardware device such that it is recognized as a Midi device (see steps below)
-- But the TouchOSC Layout onto your hardware device. (For example via AirDrop or by connecting the TouchOSC Editor from your external device with the TouchOSC Editor on your computer as described here: https://hexler.net/touchosc/manual/editor-network)
+- Put the TouchOSC Layout onto your hardware device. (For example via AirDrop or by connecting the TouchOSC Editor from your external device with the TouchOSC Editor on your computer as described here: https://hexler.net/touchosc/manual/editor-network)
 - Create a folder in your Controller Scripts folder (for Mac thats ~/Documents/Bitwig Studio/Controller Scripts) called TouchOSC
 - Copy the script TouchOSC.control.js into that folder
 - In Bitwig: open the control preferences and add a new controller (generic->TouchOSC)
@@ -47,4 +47,4 @@ When TouchOSC receives the Names of the parameters it searches for labels that a
 
 # But how does it send the names
 Cruel abuse of SysEx Messages. 
-Basically, the script constructs a message with the first to chars beeing the hex representation of the index of the parameter and the following being the hex converted ascii representations of the chars of the name. TouchOSC reconverts that (this project was literally my first time ever scripting in LUA, so if you happen to check out the script, be nice XD)
+Basically, the script constructs a message with the first two chars beeing the hex representation of the index of the parameter and the following being the hex converted ascii representations of the chars of the name. TouchOSC reconverts that (this project was literally my first time ever scripting in LUA, so if you happen to check out the script, be nice XD)
