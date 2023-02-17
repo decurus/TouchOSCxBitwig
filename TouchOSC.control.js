@@ -18,11 +18,12 @@ const REMOTE_TRACK_NAME = 15;
 const REMOTE_TRACK_NEXT = 16;
 const REMOTE_TRACK_PREVIOUS = 17;
 
+const REMOTE_PAGE_CHANGE = 39
 const REMOTE_FADER_NAME_START = 40;
 
 host.setShouldFailOnDeprecatedUse(true);
 
-host.defineController("Generic", "TouchOSC", "0.1", "b1c0c6dd-bbcf-4008-b84f-7faa3823dfdd", "decurus");
+host.defineController("Generic", "TouchOSC", "0.3", "b1c0c6dd-bbcf-4008-b84f-7faa3823dfdd", "decurus");
 
 host.defineMidiPorts(1, 1);
 
@@ -88,6 +89,10 @@ function init() {
    }
 
 
+   sendFaderValues();
+   sendFaderNames();
+   sendParameterLabels();
+   sendParameterValues();
 
    println("initialization done");
 
@@ -135,6 +140,7 @@ function sendParameterLabels(){
    //---send page name---
 }
 
+
 function sendDevicePageLabel(){
    try {
       let currentPageIndex = remoteControls.selectedPageIndex().get();
@@ -177,6 +183,21 @@ function sendParameterName(parameter){
    //let sysexmessage = `f0${indhex}${parhex}f7`;
    //host.getMidiOutPort(0).sendSysex(sysexmessage);
    //host.getMidiOutPort(0).sendSysex('f0410134f7');
+}
+
+function sendFaderValues(){
+   for(let i = 0; i<REMOTE_FADER_HI - REMOTE_FADER_LO; i++){
+      let value = trackBank.getItemAt(i).volume().get();
+      let mute = trackBank.getItemAt(i).mute().get();
+      host.getMidiOutPort(0).sendMidi(176, REMOTE_FADER_LO + i, value);
+      host.getMidiOutPort(0).sendMidi(176, REMOTE_MUTE_LO + i, mute === true?127:0);
+   }
+}
+
+function sendParameterValues(){
+   for (let i = 0; i<8; i++){
+      host.getMidiOutPort(0).sendMidi(176, REMOTE_CONTROL_LO + i, remoteControls.getParameter(i).value().get());
+   }
 }
 
 function sendFaderNames(){

@@ -1,3 +1,6 @@
+v 0.3
+All values (names, labels, mutes, values) are automatically send on start up. I know it seems like an obvious thing to do, but its also an obvious thing to forget.
+
 v 0.2
 most stuff now uses callback funcitons so no more wrong labels when changing page (hopefully)
 added track label
