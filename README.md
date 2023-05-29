@@ -2,8 +2,15 @@
 A little script that makes Bitwig communicate with TouchOSC and vis versa.
 This is a hobby project, so it may or may not recieve updates
 
-![IMG_2954409F5FA5-1](https://user-images.githubusercontent.com/25495079/219516861-93bbb6dc-a4c0-4f09-a466-aa3a37e402b4.jpeg)
-![IMG_D5A0DF87F93D-1](https://user-images.githubusercontent.com/25495079/219516769-824d4dd7-d4e2-434a-b61c-c3fd8e3bbaf7.jpeg)
+![IMG_2954409F5FA5-1](Images/remotes.png)
+![IMG_D5A0DF87F93D-1](Images/mixer.png)
+
+# Update 0.4
+The Buttons that previously muted and unmuted the tracks now arm and disarm.
+This may not make a lot of sense at first glance, but I myself use the script in live performances which always include audio input from synthesizers, therefore I use arming to enable and disable the track. 
+Muting can be achieved by just pulling the fader down anyways.
+
+And another addition: the mixer now includes a rotary slider for the first send of each track.
 
 # Features
 - All remote controls of the currently selected Bitwig device are automatically mapped to the TouchOSC knobs

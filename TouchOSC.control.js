@@ -6,8 +6,11 @@ const REMOTE_CONTROL_LO = 0;
 const REMOTE_FADER_LO=20;
 const REMOTE_FADER_HI = 26;
 
-const REMOTE_MUTE_LO = 30;
-const REMOTE_MUTE_HI = 36;
+const REMOTE_ARM_LO = 30;
+const REMOTE_ARM_HI = 35;
+
+const REMOTE_SEND_LO = 36;
+const REMOTE_SEND_HI = 41;
 
 const REMOTE_PAGE_PREVIOUS = 10;
 const REMOTE_PAGE_NEXT = 11;
@@ -23,7 +26,7 @@ const REMOTE_FADER_NAME_START = 40;
 
 host.setShouldFailOnDeprecatedUse(true);
 
-host.defineController("Generic", "TouchOSC", "0.3", "b1c0c6dd-bbcf-4008-b84f-7faa3823dfdd", "decurus");
+host.defineController("Generic", "TouchOSC", "0.4", "b1c0c6dd-bbcf-4008-b84f-7faa3823dfdd", "decurus");
 
 host.defineMidiPorts(1, 1);
 
@@ -40,7 +43,7 @@ function init() {
    userControls = host.createUserControls(REMOTE_CONTROL_HI - REMOTE_CONTROL_LO);
 
    //create Trackabank
-   trackBank = host.createTrackBank(REMOTE_FADER_HI - REMOTE_FADER_LO, 0,0);
+   trackBank = host.createTrackBank(REMOTE_FADER_HI - REMOTE_FADER_LO, 1,0);
 
    //mark interests
    remoteControls.pageNames().markInterested();
@@ -81,11 +84,19 @@ function init() {
       })
    }
 
-   for(let index = 0; index<REMOTE_MUTE_HI - REMOTE_MUTE_LO; index++){
-      trackBank.getItemAt(index).mute().markInterested();
-      trackBank.getItemAt(index).mute().addValueObserver(function(value){
-         onMute(index, value);
+   for(let index = 0; index<=REMOTE_ARM_HI - REMOTE_ARM_LO; index++){
+      trackBank.getItemAt(index).arm().markInterested();
+      trackBank.getItemAt(index).arm().addValueObserver(function(value){
+         onArmChange(index, value);
       }.bind(index));
+   }
+
+   for(let index = 0; index <= REMOTE_SEND_HI - REMOTE_SEND_LO; index++){
+      trackBank.getItemAt(index).sendBank().getItemAt(0).value().markInterested();
+      trackBank.getItemAt(index).sendBank().getItemAt(0).value().addValueObserver(function(value){
+         onSendChange(index, value);
+      }.bind(index));
+
    }
 
 
@@ -110,9 +121,12 @@ function onMidi0(status, data1, data2) {
       }else if(data1 >= REMOTE_FADER_LO && data1<= REMOTE_FADER_HI){
          let index = data1 - REMOTE_FADER_LO;
          onLevelFader(index, data2);
-      }else if(data1 >= REMOTE_MUTE_LO && data1<= REMOTE_MUTE_HI){
-         let index = data1 - REMOTE_MUTE_LO;
-         onMuteButton(index, data2);
+      }else if(data1 >= REMOTE_ARM_LO && data1<= REMOTE_ARM_HI){
+         let index = data1 - REMOTE_ARM_LO;
+         onArmButton(index, data2);
+      }else if(data1 >= REMOTE_SEND_LO && data1 <= REMOTE_SEND_HI){
+         let index = data1- REMOTE_SEND_LO;
+         onSendFader(index, data2);
       }
       else{
          if (data1 === REMOTE_PAGE_NEXT && data2 === 127) {
@@ -169,8 +183,12 @@ function onFader(index, value){
    host.getMidiOutPort(0).sendMidi(176, REMOTE_FADER_LO + index, value);
 }
 
-function onMute(index, value){
-   host.getMidiOutPort(0).sendMidi(176, REMOTE_MUTE_LO + index, value===true?127:0);
+function onArmChange(index, value){
+   host.getMidiOutPort(0).sendMidi(176, REMOTE_ARM_LO + index, value===true?127:0);
+}
+
+function onSendChange(index, value){
+   host.getMidiOutPort(0).sendMidi(176, REMOTE_SEND_LO + index, Number(Math.floor(value*127)));
 }
 
 function sendParameterName(parameter){
@@ -188,9 +206,9 @@ function sendParameterName(parameter){
 function sendFaderValues(){
    for(let i = 0; i<REMOTE_FADER_HI - REMOTE_FADER_LO; i++){
       let value = trackBank.getItemAt(i).volume().get();
-      let mute = trackBank.getItemAt(i).mute().get();
+      let arm = trackBank.getItemAt(i).arm().get();
       host.getMidiOutPort(0).sendMidi(176, REMOTE_FADER_LO + i, value);
-      host.getMidiOutPort(0).sendMidi(176, REMOTE_MUTE_LO + i, mute === true?127:0);
+      host.getMidiOutPort(0).sendMidi(176, REMOTE_ARM_LO + i, arm === true?127:0);
    }
 }
 
@@ -234,8 +252,12 @@ function onLevelFader(index, value){
    //trackBank.getItemAt(index).volume.set(value, 128);
 }
 
-function onMuteButton(index, value){
-   trackBank.getItemAt(index).mute().set(value === 127);
+function onArmButton(index, value){
+   trackBank.getItemAt(index).arm().set(value === 127);
+}
+
+function onSendFader(index, value){
+   trackBank.getItemAt(index).sendBank().getItemAt(0).value().set(value/127);
 }
 
 function isNotInstrument(index){
