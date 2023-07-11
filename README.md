@@ -1,6 +1,7 @@
 # TouchOSCxBitwig
 A little script that makes Bitwig communicate with TouchOSC and vis versa.
-This is a hobby project, so it may or may not recieve updates
+This is a hobby project, so it may or may not recieve updates.
+The Script was tested in Bitwig 4 and 5.
 
 ![IMG_2954409F5FA5-1](Images/remotes.png)
 ![IMG_D5A0DF87F93D-1](Images/mixer.png)
@@ -54,5 +55,5 @@ When the script receives a 127 on the CCs 10 and 11, it changes the remote contr
 When TouchOSC receives the Names of the parameters it searches for labels that are called parName1 to parName8. the page name is being fitted in a label that is called parName19 although I have to admit that I do not know why it happens to be 19, its supposed to be 12 but at this point i am to lazy to care.
 
 # But how does it send the names
-Cruel abuse of SysEx Messages. 
-Basically, the script constructs a message with the first two chars beeing the hex representation of the index of the parameter and the following being the hex converted ascii representations of the chars of the name. TouchOSC reconverts that (this project was literally my first time ever scripting in LUA, so if you happen to check out the script, be nice XD)
+Its all in the Sysex. 
+Basically, the Bitwig script constructs a message with the first two chars beeing the hex representation of the index of the parameter and the following being the hex converted ascii representations of the chars of the name. TouchOSC reconverts that (this project was literally my first time ever scripting in LUA, so if you happen to check out the script, be nice XD)
