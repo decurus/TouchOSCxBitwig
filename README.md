@@ -25,20 +25,20 @@ And another addition: the mixer now includes a rotary slider for the first send 
 - Install TouchOSC on the hardware device of your liking. I tested it on an iPad, works great
 - Connect your hardware device such that it is recognized as a Midi device (see steps below)
 - Put the TouchOSC Layout onto your hardware device. (For example via AirDrop or by connecting the TouchOSC Editor from your external device with the TouchOSC Editor on your computer as described here: https://hexler.net/touchosc/manual/editor-network)
-- Create a folder in your Controller Scripts folder (for Mac thats ~/Documents/Bitwig Studio/Controller Scripts) called TouchOSC
+- Create a folder in your Bitwig Controller Scripts folder (for Mac thats ~/Documents/Bitwig Studio/Controller Scripts) called TouchOSC
 - Copy the script TouchOSC.control.js into that folder
-- In Bitwig: open the control preferences and add a new controller (generic->TouchOSC)
+- In Bitwig: open the control preferences and add a new controller (generic->TouchOSC) and select the connected TouchOSC device as Input.
 - ???
 - Profit
 
-# iOS as MIDI-Device
+# iOS as MIDI-Device on Mac
 Tested using iPad and mac
 - Connect the device to your computer via USB
 - On the mac, open Audio-Midi-Setup
 - Your device will be listed on the left, click on Activate. You have to do this step every time, no idea why, if someone knows how to NOT have to do that, please tell me.
-- In TouchOSC open the connections tab. (the button with the chain symbol)
+- In TouchOSC on the device open the connections tab. (the button with the chain symbol)
 - Go to MIDI tab
-- Enable Connection 1 and browse for the Host (mine is called "IDAM MIDI Host", dont know if this is default)
+- Enable Connection 1 and browse for the Host (mine is called "IDAM MIDI Host", dont know if this is default). This step only has to be done once (except if you change it of course)
 - Click done
 
 
